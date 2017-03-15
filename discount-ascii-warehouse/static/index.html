@@ -18,209 +18,89 @@
 
         </section>
 
-
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <div id="table_div"></div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-
-
-        <div id="images"></div>
-
         <script>
             (function() {
-                var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
-//                $.getJSON( flickerAPI, {
-//                    tags: "mount rainier",
-//                    tagmode: "any",
-//                    format: "json"
-//                }).done(function( data ) {
-//                            $.each( data.items, function( i, item ) {
-//                                $( "<img>" ).attr( "src", item.media.m ).appendTo( ".products" );
-//                                if ( i === 3 ) {
-//                                    return false;
-//                                }
-//                            });
-//                        });
-
-
-//                jQuery.ajax({
-//                    url: "/api/products",
-//                    type: "GET",
-//
-//                    contentType: 'application/json; charset=utf-8',
-//                    data: JSON.stringify(Parameters),
-//                    success: function(resultData) {
-//                        //here is your json.
-//                        // process it
-//                        console.log(resultData);
-//
-//                    },
-//                    error : function(jqXHR, textStatus, errorThrown) {
-//                        console.log(jqXHR + textStatus + errorThrown);
-//                    },
-//
-//                    timeout: 120000,
-//                });
-
                 $.ajax({
                     type: "GET",
                     url: "/api/products",
                     dataType: "text",
                     success: function(resultData) {
-                        //here is your json.
-                        // process it
-                        console.log(resultData);
-                        var formattedData = resultData.replace(/}/g, "},");
-                        var stringified = JSON.stringify(formattedData);
-                        var converted = $.parseJSON(stringified);
-                        var products = $.parseJSON(resultData);
+                        var jsonString = "[" + resultData.replace(/\n/g, ",").slice(0, -1) + "]";
+                        console.log($.parseJSON(jsonString));
 
-                        console.log(products);
+                        var PRODUCT_JSON = $.parseJSON(jsonString);
+
+
+
+
+                        // Draw GoogleTable
+                        google.charts.load('current', {'packages':['table']});
+                        google.charts.setOnLoadCallback(drawTable(PRODUCT_JSON));
+
+
+                        function drawTable(PRODUCT_JSON) {
+//                            var data = new google.visualization.DataTable();
+//                            data.addColumn('string', 'Face');
+//                            data.addColumn('string', 'ID');
+//                            data.addColumn('number', 'Price');
+//                            data.addColumn('number', 'Size');
+//                            data.addColumn('date', 'Date');
+//
+//                            data.addRows([
+//                                PRODUCT_JSON
+//                            ]);
+
+//                            var data = google.visualization.arrayToDataTable([
+//                                    [
+//                                        {label: 'Face', id: 'year'},
+//                                        {label: 'ID', id: 'year'},
+//                                        {label: 'Date', id: 'Date'},
+//                                        {label: 'Size', id: 'Size', type: 'number'}, // Use object notation to explicitly specify the data type.
+//                                        {label: 'Price', id: 'Price', type: 'number'}
+//                                    ],
+//                                [{"id":"0-6yzpz4jzwkp6ez7av91i3sor","size":26,"price":739,"face":"( .-. )","date":"Sat Mar 04 2017 23:11:16 GMT+0000 (GMT)"},{"id":"1-s0rifcg4v6xv703dhqe0cnmi","size":16,"price":476,"face":"( .o.)","date":"Tue Mar 14 2017 20:44:26 GMT+0000 (GMT)"},{"id":"2-r1pw8fzd7kn4im5a3i9qz1tt9","size":15,"price":76,"face":"( `·´ )","date":"Mon Mar 13 2017 14:51:56 GMT+0000 (GMT)"},{"id":"3-z0fxhz3skcexulmdyzpmygb9","size":22,"price":2,"face":"( ° ͜ ʖ °)","date":"Tue Mar 14 2017 17:04:12 GMT+0000 (GMT)"},{"id":"4-toeri5opn9ir80g8zjw597ldi","size":22,"price":217,"face":"( ͡° ͜ʖ ͡°)","date":"Wed Mar 01 2017 22:53:18 GMT+0000 (GMT)"},{"id":"5-o09aws48mroyexwi3ccvxi529","size":36,"price":199,"face":"( ⚆ _ ⚆ )","date":"Sat Mar 04 2017 12:12:33 GMT+0000 (GMT)"},{"id":"6-hmmox5wfw1m8v0ypujqlx47vi","size":25,"price":648,"face":"( ︶︿︶)","date":"Tue Mar 07 2017 11:37:18 GMT+0000 (GMT)"},{"id":"7-oyjl1fqfyfxzvg5p3vt8d7vi","size":20,"price":202,"face":"( ﾟヮﾟ)","date":"Wed Mar 08 2017 04:36:41 GMT+0000 (GMT)"},{"id":"8-ekjmm9xl6rc6gnizdcwi5dn29","size":29,"price":519,"face":"(\\/)(°,,,°)(\\/)","date":"Thu Mar 09 2017 01:59:58 GMT+0000 (GMT)"},{"id":"9-7w36gjpzc4d4p0f4gwo03sor","size":39,"price":229,"face":"(¬_¬)","date":"Mon Mar 06 2017 14:34:50 GMT+0000 (GMT)"}]
+//                                ]);
+
+                            console.log(PRODUCT_JSON);
+
+                            var data = new google.visualization.DataTable(
+                                    {
+                                        cols: [
+                                            {id: 'task', label: 'Employee Name', type: 'string'},
+                                            {id: 'task', label: 'Employee Name', type: 'string'},
+                                            {id: 'task', label: 'Employee Name', type: 'string'},
+                                            {id: 'task', label: 'Employee Name', type: 'string'},
+                                            {id: 'startDate', label: 'Start Date', type: 'string'}],
+                                        rows: [
+
+
+                                            {c:[{v: 'Mike'}, {v: 'Mike'}, {v: 'Mike'}, {v: 'Mike'}, {v: 'Mike'}]}
+                                        ]
+                                    }
+                            );
+
+                            for (let individualProductObject of PRODUCT_JSON) {
+
+                                individualProductObject["id"] + individualProductObject["size"] + individualProductObject["price"] + individualProductObject["face"] + individualProductObject["date"]
+                            }
+
+
+                            var table = new google.visualization.Table(document.getElementById('table_div'));
+
+                            table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+                        }
 
                     },
                     error : function(jqXHR, textStatus, errorThrown) {
                         console.log(jqXHR + textStatus + errorThrown);
                     }
                 });
-
-                $.ajax({
-                    type: "GET",
-                    url: "/api/products",
-                    dataType: "text",
-                    success: function(resultData) {
-                        //here is your json.
-                        // process it
-
-                        var txt = resultData.text();
-                        const jsonArray = JSON.parse(`[${txt}]`);
-                        console.log('First ten or less results: ' + JSON.stringify(jsonArray.slice(0, 10)));
-                        console.log('Total number of results: ' + jsonArray.length);
-
-//                        console.log(resultData);
-//                        var formattedData = resultData.replace(/}/g, "},");
-//                        var stringified = JSON.stringify(formattedData);
-//                        var converted = $.parseJSON(stringified);
-//                        var products = $.parseJSON(resultData);
-//
-//                        console.log(products);
-
-                    },
-                    error : function(jqXHR, textStatus, errorThrown) {
-                        console.log(jqXHR + textStatus + errorThrown);
-                    }
-                });
-
-//                let response;
-
-        // We are using the Fetch API, that is only available in newer browsers (details: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). Try this code in Newest Chrome Console.
-//                fetch("/api/products")
-//                        .then(resp => {
-//                            response = resp;
-//                            return response.text();
-//                        })
-//                        .then(responseBody => {
-//                            if(!response.ok) {
-//                                throw responseBody;
-//                            }
-//
-//                            return responseBody;
-//                        })
-//                        .then(txt => {
-//                            const jsonArray = JSON.parse(`[${txt}]`);
-//                            console.log('First ten or less results: ' + JSON.stringify(jsonArray.slice(0, 10)));
-//                            console.log('Total number of results: ' + jsonArray.length);
-//                        })
-//                        .catch(error => console.error(error));
-
             })();
         </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!--<script>-->
-            <!--$(document).ready(function(){-->
-                <!--console.log("Loaded mate");-->
-
-                <!--var products = $.getJSON( "api/products");-->
-
-                <!--console.log(products);-->
-
-                <!--var doTheShit = function(){-->
-
-                    <!--$.getJSON( "api/products", function( data ) {-->
-                        <!--var items = [];-->
-                        <!--$.each( data, function( key, val ) {-->
-                            <!--items.push( "<li id='" + key + "'>" + val + "</li>" );-->
-                        <!--});-->
-
-                        <!--$( "<ul/>", {-->
-                            <!--"class": "my-new-list",-->
-                            <!--html: items.join( "" )-->
-                        <!--}).appendTo( "products" );-->
-                    <!--});-->
-                <!--};-->
-
-                <!--doTheShit();-->
-
-
-
-<!--//                var OMDB_BASE_URL = 'https://www.omdbapi.com/';-->
-<!--//-->
-<!--//                function getDataFromApi(searchTerm, callback) {-->
-<!--//                    var query = {-->
-<!--//                        s: searchTerm,-->
-<!--//                        r: 'json'-->
-<!--//                    }-->
-<!--//                    $.getJSON(OMDB_BASE_URL, query, callback);-->
-<!--//                }-->
-<!--//-->
-<!--//-->
-<!--//                function displayOMDBSearchData(data) {-->
-<!--//                    var resultElement = '';-->
-<!--//                    if (data.Search) {-->
-<!--//                        data.Search.forEach(function(item) {-->
-<!--//                            resultElement += '<p>' + item.Title + '</p>';-->
-<!--//                        });-->
-<!--//                    }-->
-<!--//                    else {-->
-<!--//                        resultElement += '<p>No results</p>';-->
-<!--//                    }-->
-<!--//-->
-<!--//                    $('.js-search-results').html(resultElement);-->
-<!--//                }-->
-<!--//-->
-<!--//                function watchSubmit() {-->
-<!--//                    $('.js-search-form').submit(function(e) {-->
-<!--//                        e.preventDefault();-->
-<!--//                        var query = $(this).find('.js-query').val();-->
-<!--//                        getDataFromApi(query, displayOMDBSearchData);-->
-<!--//                    });-->
-<!--//                }-->
-<!--//-->
-<!--//                $(function(){watchSubmit();});-->
-
-            <!--});-->
-        <!--</script>-->
-
-        <!--<form action="#" class="js-search-form">-->
-            <!--<label for="query"></label>-->
-            <!--<input type="text" class="js-query">-->
-            <!--<button type="submit">Search</button>-->
-        <!--</form>-->
-
-        <!--<div class="js-search-results">-->
-
-        <!--</div>-->
-        <ul></ul>
 
         </body>
 </html>
