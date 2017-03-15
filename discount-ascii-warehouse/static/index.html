@@ -33,16 +33,12 @@
                         console.log($.parseJSON(jsonString));
 
                         var PRODUCT_JSON = $.parseJSON(jsonString);
-
-
-
-
                         // Draw GoogleTable
                         google.charts.load('current', {'packages':['table']});
-                        google.charts.setOnLoadCallback(drawTable(PRODUCT_JSON));
+                        google.charts.setOnLoadCallback(drawTable);
 
 
-                        function drawTable(PRODUCT_JSON) {
+                        function drawTable() {
 //                            var data = new google.visualization.DataTable();
 //                            data.addColumn('string', 'Face');
 //                            data.addColumn('string', 'ID');
@@ -65,7 +61,6 @@
 //                                [{"id":"0-6yzpz4jzwkp6ez7av91i3sor","size":26,"price":739,"face":"( .-. )","date":"Sat Mar 04 2017 23:11:16 GMT+0000 (GMT)"},{"id":"1-s0rifcg4v6xv703dhqe0cnmi","size":16,"price":476,"face":"( .o.)","date":"Tue Mar 14 2017 20:44:26 GMT+0000 (GMT)"},{"id":"2-r1pw8fzd7kn4im5a3i9qz1tt9","size":15,"price":76,"face":"( `·´ )","date":"Mon Mar 13 2017 14:51:56 GMT+0000 (GMT)"},{"id":"3-z0fxhz3skcexulmdyzpmygb9","size":22,"price":2,"face":"( ° ͜ ʖ °)","date":"Tue Mar 14 2017 17:04:12 GMT+0000 (GMT)"},{"id":"4-toeri5opn9ir80g8zjw597ldi","size":22,"price":217,"face":"( ͡° ͜ʖ ͡°)","date":"Wed Mar 01 2017 22:53:18 GMT+0000 (GMT)"},{"id":"5-o09aws48mroyexwi3ccvxi529","size":36,"price":199,"face":"( ⚆ _ ⚆ )","date":"Sat Mar 04 2017 12:12:33 GMT+0000 (GMT)"},{"id":"6-hmmox5wfw1m8v0ypujqlx47vi","size":25,"price":648,"face":"( ︶︿︶)","date":"Tue Mar 07 2017 11:37:18 GMT+0000 (GMT)"},{"id":"7-oyjl1fqfyfxzvg5p3vt8d7vi","size":20,"price":202,"face":"( ﾟヮﾟ)","date":"Wed Mar 08 2017 04:36:41 GMT+0000 (GMT)"},{"id":"8-ekjmm9xl6rc6gnizdcwi5dn29","size":29,"price":519,"face":"(\\/)(°,,,°)(\\/)","date":"Thu Mar 09 2017 01:59:58 GMT+0000 (GMT)"},{"id":"9-7w36gjpzc4d4p0f4gwo03sor","size":39,"price":229,"face":"(¬_¬)","date":"Mon Mar 06 2017 14:34:50 GMT+0000 (GMT)"}]
 //                                ]);
 
-                            console.log(PRODUCT_JSON);
 
                             var data = new google.visualization.DataTable(
                                     {
@@ -76,17 +71,12 @@
                                             {id: 'task', label: 'Employee Name', type: 'string'},
                                             {id: 'startDate', label: 'Start Date', type: 'string'}],
                                         rows: [
-
-
                                             {c:[{v: 'Mike'}, {v: 'Mike'}, {v: 'Mike'}, {v: 'Mike'}, {v: 'Mike'}]}
                                         ]
                                     }
-                            );
+                            )
 
-                            for (let individualProductObject of PRODUCT_JSON) {
 
-                                individualProductObject["id"] + individualProductObject["size"] + individualProductObject["price"] + individualProductObject["face"] + individualProductObject["date"]
-                            }
 
 
                             var table = new google.visualization.Table(document.getElementById('table_div'));
