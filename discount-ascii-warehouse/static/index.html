@@ -37,6 +37,27 @@
                         google.charts.setOnLoadCallback(drawTable);
 
 
+
+                        const formatPriceAsDollars = (inputPrice) =>{
+                            return '$' + inputPrice + '.00';
+                        };
+
+                        var previousAdsUsed = [];
+
+                        const randomNumberGenerator = () => {
+                            const adID = Math.floor(Math.random()*1000);
+
+                            // TODO - if this ad exists - is in the above list then re-generate it
+
+                            return Math.floor(Math.random()*1000);
+                        };
+
+                        const insertAdvertisement = () => {
+                            $('#products-table tbody tr:nth-child(2n)').after('<img class="ad" src="/ad/?r=' + randomNumberGenerator() + '"/>' );
+                        };
+
+
+
                         function drawTable() {
 
                             console.log("In chart " + PRODUCT_JSON);
@@ -46,7 +67,7 @@
                                     {
                                         cols: [
                                                 {id: 'face', label: 'Face', type: 'string'},
-                                                {id: 'price', label: 'Price', type: 'number'},
+                                                {id: 'price', label: 'Price', type: 'string'},
                                                 {id: 'size', label: 'Size', type: 'number'},
                                                 {id: 'date', label: 'Date', type: 'date'},
                                                 {id: 'id', label: 'Product ID', type: 'string'}
@@ -54,23 +75,44 @@
                                     }
                             );
 
+
                             for(var i = 0; i < PRODUCT_JSON.length; i++){
-                                data.addRow([ PRODUCT_JSON[i]["face"] ,  PRODUCT_JSON[i]["price"] , PRODUCT_JSON[i]["size"] , new Date(PRODUCT_JSON[i]["date"]), PRODUCT_JSON[i]["id"] ]);
+                                let formattedDate;
+                                // TODO - move to a function - do a date check  here maybe to insert a f value for e.g. X days ago
+                                if(1 === 1){
+                                    formattedDate = {v: new Date(PRODUCT_JSON[i]["date"]),f: 'January First, Nineteen ninety-nine'};
+                                }else{
+                                    formattedDate= PRODUCT_JSON[i]["date"];
+                                }
+
+
+
+                                data.addRow([ PRODUCT_JSON[i]["face"] ,  formatPriceAsDollars(PRODUCT_JSON[i]["price"]) , PRODUCT_JSON[i]["size"] , formattedDate , PRODUCT_JSON[i]["id"] ]);
+                                // TODO if the row count is 20 we need to insert an advertisement
+
+
                             }
 
-//                            data.addRow();  // Add an empty row
-//                            data.addRow(['Hermione', new Date(1999,0,1)]); // Add a row with a string and a date value.
-//
-//                            // Add a row with two cells, the second with a formatted value.
-//                            data.addRow(['Hermione', {v: new Date(1999,0,1),f: 'January First, Nineteen ninety-nine'}]);
-//
-
+                            if(PRODUCT_JSON.length >= 20){
+                                // need to show and ad after every 20 rows
+                                var remainder = i % 20;
+                                if(remainder === 0){
+                                    insertAdvertisement();
+                                }
+                            }
 
 
                             var table = new google.visualization.Table(document.getElementById('products-table'));
 
+
                             table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+
+
                         }
+
+//                        TODO - paging scroll
+//                        https://github.com/hashchange/jquery.isinview
+
 
 
                     },
