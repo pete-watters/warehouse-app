@@ -1,1 +1,160 @@
-<!doctype html><html class="no-js"><head><meta charset="utf-8"><meta name="description" content=""><meta name="viewport" content="width=device-width,initial-scale=1"><title>discount ascii warehouse</title><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="stylesheet" href="styles/main.css"><script src="scripts/vendor/modernizr.js"></script></head><body><!--[if IE]><p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]--><div class="container"><div class="header"><ul class="nav nav-pills pull-right"><li class="active"><a href="#">Home</a></li><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul><h3 class="text-muted">discount ascii warehouse</h3></div><div class="jumbotron"><h1>'Allo, 'Allo!</h1><p class="lead">Always a pleasure scaffolding your apps.</p><p><a class="btn btn-lg btn-success" href="#">Splendid!</a></p></div><div class="row marketing"><div class="col-lg-6"><h4>HTML5 Boilerplate</h4><p>HTML5 Boilerplate is a professional front-end template for building fast, robust, and adaptable web apps or sites.</p><h4>Sass</h4><p>Sass is the most mature, stable, and powerful professional grade CSS extension language in the world.</p><h4>Bootstrap</h4><p>Sleek, intuitive, and powerful mobile first front-end framework for faster and easier web development.</p><h4>Modernizr</h4><p>Modernizr is an open-source JavaScript library that helps you build the next generation of HTML5 and CSS3-powered websites.</p></div></div><div class="footer"><p>♥ from the Yeoman team</p></div></div><script>!function(e,t,a,n,c,o){e.GoogleAnalyticsObject=n,e[n]||(e[n]=function(){(e[n].q=e[n].q||[]).push(arguments)}),e[n].l=+new Date,c=t.createElement(a),o=t.getElementsByTagName(a)[0],c.src="https://www.google-analytics.com/analytics.js",o.parentNode.insertBefore(c,o)}(window,document,"script","ga"),ga("create","UA-XXXXX-X"),ga("send","pageview")</script><script src="scripts/vendor.js"></script><script src="scripts/plugins.js"></script><script src="scripts/main.js"></script></body></html>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Discount Ascii Warehouse</title>
+
+        <style type="text/css">
+            .products {
+                border: 1px solid #aaa;
+                padding: 5px 10px;
+                height: 220px;
+                overflow-y: scroll;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Discount Ascii Warehouse</h1>
+            <p>Here you're sure to find a bargain on some of the finest ascii available to purchase. Be sure to peruse our selection of ascii faces in an exciting range of sizes and prices.</p>
+            <p>But first, a word from our sponsors:</p>
+            <script>document.write('<img class="ad" src="/ad/?r=' + Math.floor(Math.random()*1000) + '"/>');</script>
+        </header>
+
+        <section class="products">
+            <div id="products-table"></div>
+        </section>
+
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+        <script>
+            (() => {
+
+
+            $('.products').scroll(function() {
+                if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+                    console.log('end reached');
+
+
+                }
+            });
+
+
+            var nextPage = function () {
+                console.log("next page");
+            };
+            const formatPriceAsDollars = (inputPrice) =>{
+                return '$' + inputPrice + '.00';
+            };
+
+            var previousAdsUsed = [];
+
+            const randomNumberGenerator = () => {
+                const adID = Math.floor(Math.random()*1000);
+                // TODO - if this ad exists - is in the above list then re-generate it
+                return Math.floor(Math.random()*1000);
+            };
+
+            const insertAdvertisement = () => {
+                $('#products-table tbody tr:nth-child(2n)').after('<img class="ad" src="/ad/?r=' + randomNumberGenerator() + '"/>' );
+            };
+
+            let drawGoogleDataTable = (tableInputData) => {
+
+                // Draw GoogleTable
+                google.charts.load('current', {'packages':['table']});
+                google.charts.setOnLoadCallback(drawTable);
+
+
+
+                function drawTable() {
+
+                    const data = new google.visualization.DataTable(
+                            {
+                                cols: [
+                                    {id: 'face', label: 'Face', type: 'string'},
+                                    {id: 'price', label: 'Price', type: 'string'},
+                                    {id: 'size', label: 'Size', type: 'number'},
+                                    {id: 'date', label: 'Date', type: 'date'},
+                                    {id: 'id', label: 'Product ID', type: 'string'}
+                                ]
+                            }
+                    );
+
+                    const formatDate = (tableInputData) => {
+                        let formattedDate;
+                        // TODO - do a date check  here maybe to insert a f value for e.g. X days ago
+                        if(1 === 1){
+                            formattedDate = {v: new Date(tableInputData[i]['date']),f: 'January First, Nineteen ninety-nine'};
+                        }else{
+                            formattedDate= tableInputData[i]['date'];
+                        }
+                        return formattedDate;
+
+                    };
+
+                    for(var i = 0; i < tableInputData.length; i++){
+                        data.addRow([ tableInputData[i]['face'] ,  formatPriceAsDollars(tableInputData[i]['price']) , tableInputData[i]['size'] , formatDate(tableInputData) , tableInputData[i]['id'] ]);
+                        // TODO if the row count is 20 we need to insert an advertisement
+                    }
+
+                    if(tableInputData.length >= 20){
+                        // need to show and ad after every 20 rows
+                        var remainder = i % 20;
+                        if(remainder === 0){
+                            insertAdvertisement();
+                        }
+                    }
+
+
+                    var table = new google.visualization.Table(document.getElementById('products-table'));
+
+                    //TODO set a fixed height here so you can scroll down and read more
+
+                    table.draw(data, {showRowNumber: true, width: '100%', height: '100%'});
+
+                    // TODO - onclick of sorting needs to make an API call again to get data sorted by server
+                    // should turn off sorting locally
+                    //  I would suggest, however, that you investigate implementing server-side paging via AJAX calls.
+                    // Set up a script or servlet that hands out data in pieces, and an AJAX function on the client-side
+                    // that calls the server for the next piece of data (it could be one page, 5 pages, 100 pages,
+                    // whatever is most convenient for your application), and fills in the table piece-by-piece.
+                }
+
+// Add update Chart method here - http://jsfiddle.net/R6Sh8/
+// use this to update the chart as necessary on scroll etc.  / sort
+
+
+                //                        TODO - paging scroll
+                //                        https://github.com/hashchange/jquery.isinview
+                // TODO - onscroll just redraw full table
+                //                        http://stackoverflow.com/questions/11473143/jquery-automatically-scrolling-table-rows-but-with-table-header-fixed
+
+            };
+
+            let loadProductsFromAPI = () => {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/products?limit=40',
+                    dataType: 'text',
+                    success: function(resultData) {
+                        var jsonString = '[' + resultData.replace(/\n/g, ',').slice(0, -1) + ']';
+                        var tableInputData = $.parseJSON(jsonString);
+                        drawGoogleDataTable(tableInputData);
+
+                    },
+                    error : function(jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR + textStatus + errorThrown);
+                    }
+                });
+            };
+
+            loadProductsFromAPI();
+
+        })();
+
+        </script>
+
+        </body>
+</html>
