@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$/backup/discount-ascii-warehouse" libraries="{warehouse-app/backup/discount-ascii-warehouse/node_modules}" />
+    <file url="file://$PROJECT_DIR$/discount-ascii-client" libraries="{warehouse-app/discount-ascii-client/node_modules}" />
+    <file url="file://$PROJECT_DIR$/discount-ascii-warehouse" libraries="{warehouse-app/discount-ascii-warehouse/node_modules}" />
     <includedPredefinedLibrary name="ECMAScript 6" />
   </component>
 </project>

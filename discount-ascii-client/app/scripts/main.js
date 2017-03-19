@@ -1,5 +1,13 @@
 (() => {
 
+
+  $('#products-table').jscroll({
+    loadingHtml: '<img src="loading.gif" alt="Loading" /> Loading...',
+    padding: 20,
+    nextSelector: 'a.jscroll-next:last',
+    contentSelector: 'li'
+  });
+
   const formatPriceAsDollars = (inputPrice) =>{
     return '$' + inputPrice + '.00';
   };
