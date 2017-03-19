@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Discount Ascii Warehouse</title>
-
         <style type="text/css">
             .products {
                 border: 1px solid #aaa;
@@ -31,7 +30,6 @@
         <script>
             (() => {
 
-
             $('.products').scroll(function() {
                 if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
                     console.log('end reached');
@@ -40,10 +38,6 @@
                 }
             });
 
-
-            var nextPage = function () {
-                console.log("next page");
-            };
             const formatPriceAsDollars = (inputPrice) =>{
                 return '$' + inputPrice + '.00';
             };
@@ -60,6 +54,32 @@
                 $('#products-table tbody tr:nth-child(2n)').after('<img class="ad" src="/ad/?r=' + randomNumberGenerator() + '"/>' );
             };
 
+            const formatDate = (tableInputData, inputIterator) => {
+                let formattedDate;
+                // TODO - do a date check  here maybe to insert a f value for e.g. X days ago
+                if(1 === 1){
+                    formattedDate = {v: new Date(tableInputData[inputIterator]['date']),f: 'January First, Nineteen ninety-nine'};
+                }else{
+                    formattedDate= tableInputData[inputIterator]['date'];
+                }
+                return formattedDate;
+
+            };
+
+            const tableColumnHeadings = {
+                cols: [
+                    {id: 'face', label: 'Face', type: 'string'},
+                    {id: 'price', label: 'Price', type: 'string'},
+                    {id: 'size', label: 'Size', type: 'number'},
+                    {id: 'date', label: 'Date', type: 'date'},
+                    {id: 'id', label: 'Product ID', type: 'string'}
+                ]
+            };
+
+            // FIXME - insert faces with style like this:
+                // <span style="font-weight:' + tableInputData[i]['size'] + ' ">' + tableInputData[i]['face'] + '</span>'
+//                 OR $('#products-table tr.google-visualization-table-tr-even')[0].cells[1].css
+
             let drawGoogleDataTable = (tableInputData) => {
 
                 // Draw GoogleTable
@@ -69,43 +89,23 @@
 
 
                 function drawTable() {
-
-                    const data = new google.visualization.DataTable(
-                            {
-                                cols: [
-                                    {id: 'face', label: 'Face', type: 'string'},
-                                    {id: 'price', label: 'Price', type: 'string'},
-                                    {id: 'size', label: 'Size', type: 'number'},
-                                    {id: 'date', label: 'Date', type: 'date'},
-                                    {id: 'id', label: 'Product ID', type: 'string'}
-                                ]
-                            }
-                    );
-
-                    const formatDate = (tableInputData) => {
-                        let formattedDate;
-                        // TODO - do a date check  here maybe to insert a f value for e.g. X days ago
-                        if(1 === 1){
-                            formattedDate = {v: new Date(tableInputData[i]['date']),f: 'January First, Nineteen ninety-nine'};
-                        }else{
-                            formattedDate= tableInputData[i]['date'];
-                        }
-                        return formattedDate;
-
-                    };
+                    const data = new google.visualization.DataTable(tableColumnHeadings);
 
                     for(var i = 0; i < tableInputData.length; i++){
-                        data.addRow([ tableInputData[i]['face'] ,  formatPriceAsDollars(tableInputData[i]['price']) , tableInputData[i]['size'] , formatDate(tableInputData) , tableInputData[i]['id'] ]);
-                        // TODO if the row count is 20 we need to insert an advertisement
-                    }
-
-                    if(tableInputData.length >= 20){
-                        // need to show and ad after every 20 rows
+                        data.addRow([ tableInputData[i]['face'] ,  formatPriceAsDollars(tableInputData[i]['price']) , tableInputData[i]['size'] , formatDate(tableInputData, i) , tableInputData[i]['id'] ]);
                         var remainder = i % 20;
                         if(remainder === 0){
                             insertAdvertisement();
                         }
                     }
+//
+//                    if(tableInputData.length >= 20){
+//                        // need to show and ad after every 20 rows
+//                        var remainder = i % 20;
+//                        if(remainder === 0){
+//                            insertAdvertisement();
+//                        }
+//                    }
 
 
                     var table = new google.visualization.Table(document.getElementById('products-table'));
